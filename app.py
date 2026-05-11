@@ -1,4 +1,3 @@
-from cryptography.hazmat import backends
 import streamlit as st
 import numpy as np
 import time
@@ -135,7 +134,7 @@ class QLearningAgent:
             return np.random.randint(2)
         return np.argmax(self.q_table[state_key])
     
-    def learn(self, state, action, reward, next_state, done):
+    def learn(self, state, action, reward, next_state, done): # Функция обучения агента
         state_key = self.discretize(state)
         next_key = self.discretize(next_state)
         
@@ -148,7 +147,7 @@ class QLearningAgent:
         if not done:
             target += self.gamma * np.max(self.q_table[next_key])
             
-        self.q_table[state_key][action] += self.alpha * (target - self.q_table[state_key][action])
+        self.q_table[state_key][action] += self.alpha * (target - self.q_table[state_key][action]) # Обновление Q-таблицы (сравнение)
 
 def draw_game_frame(game):
     """Рисует HTML кадр игры"""
@@ -325,7 +324,7 @@ if st.session_state.running:
         while steps < 1000 and st.session_state.running:
             action = st.session_state.agent.get_action(state)
             next_state, reward, done = st.session_state.game.step(action)
-            st.session_state.agent.learn(state, action, reward, next_state, done)
+            st.session_state.agent.learn(state, action, reward, next_state, done) # обучения агента
             
             state = next_state
             episode_reward += reward
